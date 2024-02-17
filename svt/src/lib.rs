@@ -1,4 +1,4 @@
-//! Rust wrappers for Intel's SVT-AV1 and SVT-HEVC encoders.
+//! Rust wrappers for Intel's SVT (Scalable Video Technology) family of encoders.
 
 #![warn(
     anonymous_parameters,
@@ -93,13 +93,13 @@ pub trait Packet: AsRef<[u8]> + std::fmt::Debug {
 ///
 /// # Example
 ///
-/// ```no_run
+/// ```
 /// # use svt::{YUVBuffer, Plane, Packet};
 /// # #[derive(Debug)]
 /// # struct DummyPacket;
 /// # impl Packet for DummyPacket {
 /// #     fn as_bytes(&self) -> &[u8] { &[] }
-/// #     fn is_eos(&self) -> bool { false }
+/// #     fn is_eos(&self) -> bool { true }
 /// # }
 /// # impl AsRef<[u8]> for DummyPacket {
 /// #     fn as_ref(&self) -> &[u8] { &[] }
@@ -122,7 +122,9 @@ pub trait Packet: AsRef<[u8]> + std::fmt::Debug {
 ///     encoder.send_picture(&picture, pts, false)?;
 ///     while let Some(packet) = encoder.get_packet(false)? {
 ///        // Write the packet to a file or send it over the network.
-///     }  
+///     }
+///
+/// #   break
 /// }
 ///
 /// encoder.finish()?;

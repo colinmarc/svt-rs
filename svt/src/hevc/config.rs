@@ -225,7 +225,7 @@ impl HevcEncoderConfig {
         self
     }
 
-    /// Changes the type of frame used for the base layer in [`PredictionStructure::RandomAccess`] mode.
+    /// Changes the type of frame used for the base layer in [PredictionStructure::RandomAccess] mode.
     pub fn base_layer_switch_mode(mut self, base_layer_switch_mode: BaseLayerSwitchMode) -> Self {
         self.cfg.baseLayerSwitchMode = match base_layer_switch_mode {
             BaseLayerSwitchMode::B => 0,
@@ -320,7 +320,7 @@ impl HevcEncoderConfig {
     }
 
     /// Sets the search area width for motion estimation. If not set and
-    /// [EncoderConfig::use_default_me_hme] is true (the default), the width
+    /// [HevcEncoderConfig::use_default_me_hme] is true (the default), the width
     /// will depend on the input resolution.
     pub fn search_area_width(mut self, width: u32) -> Self {
         self.cfg.searchAreaWidth = width;
@@ -328,7 +328,7 @@ impl HevcEncoderConfig {
     }
 
     /// Sets the search area height for motion estimation. If not set and
-    /// [EncoderConfig::use_default_me_hme] is true (the default), the height
+    /// [HevcEncoderConfig::use_default_me_hme] is true (the default), the height
     /// will depend on the input resolution.
     pub fn search_area_height(mut self, height: u32) -> Self {
         self.cfg.searchAreaHeight = height;
@@ -399,7 +399,7 @@ impl HevcEncoderConfig {
         self
     }
 
-    /// Configures the encoder to expect input in the BT2020 color space. Only applicable for 10-bit input. Requries [EncoderConfig::code_vui] to be enabled.
+    /// Configures the encoder to expect input in the BT2020 color space. Only applicable for 10-bit input. Requries [HevcEncoderConfig::code_vui] to be enabled.
     pub fn hdr_input(mut self, v: bool) -> Self {
         self.cfg.highDynamicRangeInput = v as u32;
         self
@@ -563,7 +563,7 @@ impl HevcEncoderConfig {
     }
 
     /// Enables speed control, which dynamically adjusts the preset to match
-    /// [EncoderConfig::framerate].
+    /// [HevcEncoderConfig::framerate].
     pub fn enable_speed_control(mut self, speed_control: bool) -> Self {
         self.cfg.speedControlFlag = speed_control as u32;
         self

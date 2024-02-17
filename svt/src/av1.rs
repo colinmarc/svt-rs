@@ -1,5 +1,50 @@
 //! A rust wrapper for the Alliance for Open Media's Scalable Video Technology
 //! for AV1 (SVT-AV1) video encoder.
+//!
+//! # Example
+//! ```
+//! # use svt::{Encoder, Packet, YUVBuffer, SubsamplingFormat};
+//! # use svt::av1::{Av1EncoderConfig, RateControlMode};
+//! # fn copy_frame(_: &mut YUVBuffer)
+//! #     -> Result<i64, Box<dyn std::error::Error>> { Ok(0) }
+//! # fn main() -> Result<(), Box<dyn std::error::Error>> {
+//! # let width = 800;
+//! # let height = 600;
+//! # let colorspace = SubsamplingFormat::Yuv420;
+//! let encoder = Av1EncoderConfig::default()
+//!     .preset(8)
+//!     .rate_control_mode(RateControlMode::ConstantRateFactor(30))
+//!     .create_encoder(width, height, colorspace)?;
+//!
+//! let mut buffer = YUVBuffer::new(width, height, colorspace);
+//!
+//! loop {
+//!     // Copy the YUV data into the buffer from a file, network stream, etc.
+//!     // The source will also provide the PTS (presentation timestamp).
+//!     let pts = copy_frame(&mut buffer)?;
+//!
+//!     // Submit the input picture.
+//!     encoder.send_picture(&buffer, pts, false)?;
+//!     while let Some(packet) = encoder.get_packet(false)? {
+//!         // Write the packet to a file or send it over the network.
+//!     }
+//!
+//! #   break
+//! }
+//!
+//! // Once all frames have been submitted, flush the encoder.
+//! encoder.finish()?;
+//!
+//! while let Some(packet) = encoder.get_packet(true)? {
+//!     // Handle the final packets the same way, but check `is_eos` to see if
+//!     // the stream is finished.
+//!     if packet.is_eos() {
+//!         break;
+//!     }
+//! }
+//!
+//! # Ok(())
+//! # }
 
 use svt_av1_sys::*;
 

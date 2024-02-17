@@ -669,7 +669,7 @@ impl Av1EncoderConfig {
         self
     }
 
-    /// Configures the encoder to pin execution to the cores specified by [`logical_processors`].
+    /// Configures the encoder to pin execution to the cores specified by [`Av1EncoderConfig::logical_processors`].
     pub fn enable_pinned_execution(mut self, v: bool) -> Self {
         self.cfg.pin_threads = v.into();
         self

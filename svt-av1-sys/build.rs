@@ -55,6 +55,7 @@ fn main() -> anyhow::Result<()> {
         .allowlist_item("svt_av1_.*")
         .allowlist_item("Svt.*")
         .derive_default(true)
+        .generate_comments(false)
         .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()))
         .generate()
         .context("failed to generate bindings")?;
