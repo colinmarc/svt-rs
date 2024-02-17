@@ -1,0 +1,6 @@
+[submodule "svt-hevc-sys/SVT-HEVC"]
+	path = svt-hevc-sys/SVT-HEVC
+	url = https://github.com/OpenVisualCloud/SVT-HEVC
+[submodule "svt-av1-sys/SVT-AV1"]
+	path = svt-av1-sys/SVT-AV1
+	url = https://gitlab.com/AOMediaCodec/SVT-AV1.git

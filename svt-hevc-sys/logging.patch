@@ -1,0 +1,17 @@
+--- original
++++ modified
+@@ -528,7 +528,13 @@
+
+ #define LIB_PRINTF_ENABLE                1
+ #if LIB_PRINTF_ENABLE
+-#define SVT_LOG printf
++int __svt_hevc_rust_log_callback(const char *msg);
++#define SVT_LOG(s, ...) \
++	do { \
++		char buf[256]; \
++		snprintf(buf, 256, s,##__VA_ARGS__); \
++		__svt_hevc_rust_log_callback(buf); \
++	} while (0)
+ #else
+ #if _MSC_VER
+ #define SVT_LOG(s, ...) printf("")

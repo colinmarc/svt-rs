@@ -1,0 +1,22 @@
+[package]
+name = "svt"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+hevc = ["dep:svt-hevc-sys"]
+av1 = ["dep:svt-av1-sys", "dep:bitflags"]
+
+[dependencies]
+bitflags = { version = "2.4", optional = true }
+svt-av1-sys = { path = "../svt-av1-sys", optional = true }
+svt-hevc-sys = { path = "../svt-hevc-sys", optional = true }
+thiserror = "1.0.51"
+
+[dev-dependencies]
+simple_logger = "4"
+y4m = "0.8.0"
+
+[[example]]
+name = "encode"
+required-features = ["hevc"]
