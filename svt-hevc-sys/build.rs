@@ -9,11 +9,21 @@ fn main() -> anyhow::Result<()> {
     let source_path = manifest_dir.join("SVT-HEVC");
     let out_path = PathBuf::from(env::var("OUT_DIR")?);
 
+    // Patch the version file. CMake usually does this *in the source tree* the
+    // first time it's run, but that's fragile.
+    let patched_version_header = out_path.join("EbApiVersion.h");
+    apply_patch(
+        "SVT-HEVC/Source/API/EbApiVersion.h.in",
+        &patched_version_header,
+        manifest_dir.join("version.patch"),
+    )
+    .context("failed to apply version patch")?;
+
     // Patch the logging macro to call our rust fn.
-    let patched_header = out_path.join("EbDefinitions_PATCHED.h");
+    let patched_logging_header = out_path.join("EbDefinitions.h");
     apply_patch(
         "SVT-HEVC/Source/Lib/Codec/EbDefinitions.h",
-        &patched_header,
+        &patched_logging_header,
         manifest_dir.join("logging.patch"),
     )
     .context("failed to apply logging patch")?;
@@ -22,11 +32,16 @@ fn main() -> anyhow::Result<()> {
     let compile_path = cmake::Config::new(&source_path)
         .define("BUILD_SHARED_LIBS", "OFF")
         .define("BUILD_APP", "OFF")
-        .profile("Release") // The encoder does an awful lot of printf() in debug mode.
-        // This injects our header file during compilation. The patched header
-        // file requires EbApi.h, so we have to add that include path as well.
+        // The encoder does an awful lot of printf() in debug mode.
+        .profile("Release")
+        // This injects our patched header files during compilation. The patched
+        // logging header requires EbApi.h, so we have to add that include path,
+        // as well our patched EbApiVersion.h, since that hasn't been generated
+        // by CMake yet.
+        .cflag(format!("-I{}", out_path.display()))
         .cflag(format!("-I{}/Source/API", source_path.display()))
-        .cflag(format!("-include{}", patched_header.display()))
+        .cflag(format!("-include{}", patched_version_header.display()))
+        .cflag(format!("-include{}", patched_logging_header.display()))
         .build();
 
     println!(
