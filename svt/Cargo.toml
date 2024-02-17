@@ -1,5 +1,6 @@
 [package]
 name = "svt"
+description = "Bindings for the Scalable Video Technology family of encoders."
 version = "0.1.0"
 edition = "2021"
 
@@ -19,4 +20,4 @@ y4m = "0.8.0"
 
 [[example]]
 name = "encode"
-required-features = ["hevc"]
+required-features = ["av1"]

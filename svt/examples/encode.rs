@@ -28,13 +28,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut buf = YUVBuffer::new(width, height, colorspace);
 
-    let encoder = svt::hevc::HevcEncoderConfig::default()
-        .preset(7)
-        .rate_control_mode(svt::hevc::RateControlMode::ConstantQp)
-        .qp(30)
-        .code_vps_sps_pps(true)
-        .code_eos(true)
-        .thread_count(4)
+    let encoder = svt::av1::Av1EncoderConfig::default()
+        .preset(8)
+        .rate_control_mode(svt::av1::RateControlMode::ConstantRateFactor(30))
         .create_encoder(width, height, colorspace)?;
 
     let mut pts: i64 = 0;
