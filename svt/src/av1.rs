@@ -88,7 +88,9 @@ impl std::fmt::Debug for Av1Encoder {
     }
 }
 
-impl Encoder<Av1Packet> for Av1Encoder {
+impl Encoder for Av1Encoder {
+    type Packet = Av1Packet;
+
     fn send_picture(
         &self,
         picture: &impl Picture,

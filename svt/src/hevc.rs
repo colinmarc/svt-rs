@@ -90,7 +90,9 @@ impl std::fmt::Debug for HevcEncoder {
     }
 }
 
-impl Encoder<HevcPacket> for HevcEncoder {
+impl Encoder for HevcEncoder {
+    type Packet = HevcPacket;
+
     fn send_picture(
         &self,
         picture: &impl Picture,

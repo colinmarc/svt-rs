@@ -95,16 +95,7 @@ pub trait Packet: AsRef<[u8]> + std::fmt::Debug {
 ///
 /// ```
 /// # use svt::{YUVBuffer, Plane, Packet};
-/// # #[derive(Debug)]
-/// # struct DummyPacket;
-/// # impl Packet for DummyPacket {
-/// #     fn as_bytes(&self) -> &[u8] { &[] }
-/// #     fn is_eos(&self) -> bool { true }
-/// # }
-/// # impl AsRef<[u8]> for DummyPacket {
-/// #     fn as_ref(&self) -> &[u8] { &[] }
-/// # }
-/// # fn doctest(encoder: impl svt::Encoder<DummyPacket>) -> Result<(), svt::Error> {
+/// # fn example(encoder: impl svt::Encoder) -> Result<(), svt::Error> {
 /// loop {
 ///     // Get a picture from somewhere. The width, height, and subsampling
 ///     // format must match the encoder's configuration.
@@ -137,7 +128,10 @@ pub trait Packet: AsRef<[u8]> + std::fmt::Debug {
 /// # Ok(())
 /// # }
 /// ```
-pub trait Encoder<P: Packet> {
+pub trait Encoder {
+    /// The output of the encoder.
+    type Packet: Packet + AsRef<[u8]>;
+
     /// Sends an input picture to the encoder. The picture should have the same
     /// dimensions as the encoder, and the same chroma subsampling layout that
     /// the encoder was configured with (usually 4:2:0).
@@ -160,5 +154,5 @@ pub trait Encoder<P: Packet> {
     /// If `wait` is true, this function will block until a packet is available,
     /// or indefinitely if the stream is already finished. Therefore, Callers
     /// should check [`Packet::is_eos`] to determine when the stream has ended.
-    fn get_packet(&self, wait: bool) -> Result<Option<P>, Error>;
+    fn get_packet(&self, wait: bool) -> Result<Option<Self::Packet>, Error>;
 }
