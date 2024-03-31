@@ -58,13 +58,13 @@ pub enum Av1Tier {
 
 /// Input/output color space, according to SO/IEC 23091-4/ITU-T H.273.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
-pub enum Colorspace {
-    /// Unspecified color space (CP_UNSPECIFIED, TC_UNSPECIFIED, MC_UNSPECIFIED).
+pub enum ColorDescription {
+    /// Unspecified color description (CP_UNSPECIFIED, TC_UNSPECIFIED, MC_UNSPECIFIED).
     Unspecified,
     /// CP_BT_709 color primaries, TC_BT_709 transfer characteristics, and MC_BT_709 matrix coefficients. Standard for HD.
     Bt709,
-    /// CP_BT_2020 color primaries, TC_BT_2020_10_BIT transfer characteristics, and MC_BT_2020_NCL matrix coefficients. Standard for UHD.
-    Bt2020,
+    /// CP_BT_2020 color primaries, TC_SMPTE_2084 transfer characteristics, and MC_BT_2020_NCL matrix coefficients. Standard for the HDR10 media profile.
+    Bt2020Pq,
     /// Some other combination. See the AV1 spec section 6.4.2 for details.
     Other {
         /// The color primaries.
@@ -364,13 +364,13 @@ impl Av1EncoderConfig {
         self
     }
 
-    /// Sets the color space to tag the bitstream with.
-    pub fn color_space(mut self, color_space: Colorspace) -> Self {
+    /// Sets the color metadata, which is used to tag the bitstream.
+    pub fn color_description(mut self, color_space: ColorDescription) -> Self {
         let (cp, tc, mc) = match color_space {
-            Colorspace::Unspecified => (2, 2, 2),
-            Colorspace::Bt709 => (1, 1, 1),
-            Colorspace::Bt2020 => (9, 14, 9),
-            Colorspace::Other {
+            ColorDescription::Unspecified => (2, 2, 2),
+            ColorDescription::Bt709 => (1, 1, 1),
+            ColorDescription::Bt2020Pq => (9, 16, 9),
+            ColorDescription::Other {
                 primaries,
                 transfer_characteristics,
                 matrix_coefficients,
@@ -387,8 +387,8 @@ impl Av1EncoderConfig {
     /// Sets the color range to tag the bitstream with.
     pub fn color_range(mut self, color_range: ColorRange) -> Self {
         self.cfg.color_range = match color_range {
-            ColorRange::Limited => 1,
-            ColorRange::Full => 0,
+            ColorRange::Limited => 0,
+            ColorRange::Full => 1,
         };
 
         self
