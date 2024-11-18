@@ -3,6 +3,7 @@ name = "svt"
 description = "Bindings for the Scalable Video Technology family of encoders."
 version = "0.2.0"
 edition = "2021"
+license = "MIT"
 
 [features]
 hevc = ["dep:svt-hevc-sys"]
