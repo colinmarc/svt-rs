@@ -8,6 +8,7 @@ license = "MIT"
 [features]
 hevc = ["dep:svt-hevc-sys"]
 av1 = ["dep:svt-av1-sys", "dep:bitflags"]
+log = ["svt-av1-sys?/log", "svt-hevc-sys?/log"]
 
 [dependencies]
 bitflags = { version = "2.4", optional = true }
