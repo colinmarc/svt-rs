@@ -19,10 +19,10 @@ fn main() -> anyhow::Result<()> {
 
     if cfg!(feature = "log") {
         // Patch the logging macro to call our rust fn.
-        let patched_header = out_path.join("EbLog_PATCHED.h");
+        let patched_header = out_path.join("svt_log_PATCHED.h");
 
         apply_patch(
-            "SVT-AV1/Source/Lib/Common/Codec/EbLog.h",
+            "SVT-AV1/Source/Lib/Codec/svt_log.h",
             &patched_header,
             manifest_dir.join("logging.patch"),
         )
