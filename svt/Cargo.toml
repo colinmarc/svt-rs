@@ -12,8 +12,8 @@ log = ["svt-av1-sys?/log", "svt-hevc-sys?/log"]
 
 [dependencies]
 bitflags = { version = "2.4", optional = true }
-svt-av1-sys = { path = "../svt-av1-sys", version = "2.3.0", optional = true }
-svt-hevc-sys = { path = "../svt-hevc-sys", version = "0.1.0", optional = true }
+svt-av1-sys = { path = "../svt-av1-sys", optional = true }
+svt-hevc-sys = { path = "../svt-hevc-sys", optional = true }
 thiserror = "1"
 
 [dev-dependencies]
