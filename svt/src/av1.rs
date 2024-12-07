@@ -275,9 +275,8 @@ mod tests {
         simple_logger::init_with_env().ok();
 
         let _enc = Av1EncoderConfig::default()
-            .preset(99)
+            .bitrate_section_percentage(999, 999)
             .create_encoder(800, 600, SubsamplingFormat::Yuv420)
-            .map(|_| ())
-            .expect_err("EB_BadParameter");
+            .expect_err("expected EB_BadParameter");
     }
 }
