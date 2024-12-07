@@ -13,7 +13,7 @@ fn main() -> anyhow::Result<()> {
     cmake_build
         .define("BUILD_SHARED_LIBS", "OFF")
         .define("BUILD_APPS", "OFF")
-        .define("BUILD_DEC", "OFF")
+        .define("SVT_AV1_LTO", "OFF")
         // The encoder does an awful lot of printf() in debug mode.
         .profile("Release");
 
