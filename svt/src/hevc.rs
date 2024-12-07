@@ -143,7 +143,7 @@ impl Encoder for HevcEncoder {
         };
 
         let mut input = EB_BUFFERHEADERTYPE {
-            nSize: std::mem::size_of::<EB_BUFFERHEADERTYPE>() as u32,
+            nSize: size_of::<EB_BUFFERHEADERTYPE>() as u32,
             pBuffer: &mut input_pic as *mut _ as *mut u8,
             nFilledLen: (y.len() + u.len() + v.len()) as u32,
             pts,

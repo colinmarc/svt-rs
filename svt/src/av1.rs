@@ -138,7 +138,7 @@ impl Encoder for Av1Encoder {
         };
 
         let mut input = EbBufferHeaderType {
-            size: std::mem::size_of::<EbBufferHeaderType>() as u32,
+            size: size_of::<EbBufferHeaderType>() as u32,
             p_buffer: &mut input_pic as *mut _ as *mut u8,
             n_filled_len: (y.len() + u.len() + v.len()) as u32,
             pts,
